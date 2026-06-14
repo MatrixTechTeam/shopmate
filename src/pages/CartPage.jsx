@@ -18,9 +18,14 @@ export default function CartPage() {
   if (cart.length === 0) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-24 text-center">
-        <ShoppingCart size={48} className="mx-auto text-gray-200 mb-4" />
-        <h2 className="text-xl font-bold text-dark mb-2">Your cart is empty</h2>
-        <p className="text-gray-400 text-sm mb-6">
+        <ShoppingCart
+          size={48}
+          className="mx-auto text-gray-200 dark:text-gray-700 mb-4"
+        />
+        <h2 className="text-xl font-bold text-dark dark:text-white mb-2">
+          Your cart is empty
+        </h2>
+        <p className="text-gray-400 dark:text-gray-500 text-sm mb-6">
           Add some items from the shop to get started.
         </p>
         <Link to="/shop">
@@ -33,7 +38,9 @@ export default function CartPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-dark">Cart ({totalItems})</h1>
+        <h1 className="text-2xl font-bold text-dark dark:text-white">
+          Cart ({totalItems})
+        </h1>
         <button
           onClick={handleClearCart}
           className="text-xs text-red-400 hover:text-red-600 transition-colors"
@@ -48,19 +55,23 @@ export default function CartPage() {
           ))}
         </div>
         <div>
-          <div className="bg-white rounded-2xl p-5 shadow-sm sticky top-20">
-            <h2 className="font-semibold text-dark mb-4">Order Summary</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm sticky top-20">
+            <h2 className="font-semibold text-dark dark:text-white mb-4">
+              Order Summary
+            </h2>
             <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-sm text-gray-600">
+              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
                 <span>Subtotal ({totalItems} items)</span>
                 <span>{formatPrice(totalPrice)}</span>
               </div>
-              <div className="flex justify-between text-sm text-gray-600">
+              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
                 <span>Shipping</span>
-                <span className="text-emerald-600">Free</span>
+                <span className="text-emerald-600 dark:text-emerald-400">
+                  Free
+                </span>
               </div>
             </div>
-            <div className="border-t border-gray-100 pt-4 flex justify-between font-bold text-dark mb-5">
+            <div className="border-t border-gray-100 dark:border-gray-700 pt-4 flex justify-between font-bold text-dark dark:text-white mb-5">
               <span>Total</span>
               <span>{formatPrice(totalPrice)}</span>
             </div>

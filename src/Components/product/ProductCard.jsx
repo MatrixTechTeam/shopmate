@@ -32,10 +32,10 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-card hover:shadow-hover transition-shadow duration-200 group flex flex-col border border-gray-100">
+    <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-card hover:shadow-hover transition-shadow duration-200 group flex flex-col border border-gray-100 dark:border-gray-700">
       <Link
         to={`/product/${product.id}`}
-        className="relative block overflow-hidden bg-gray-50 aspect-square"
+        className="relative block overflow-hidden bg-gray-50 dark:bg-gray-700 aspect-square"
         aria-label={`View details of ${product.title}`}
       >
         <img
@@ -56,7 +56,7 @@ function ProductCard({ product }) {
         )}
         <button
           onClick={handleWishlistToggle}
-          className="absolute top-2 right-2 p-1.5 rounded-full bg-white shadow-md hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary"
+          className="absolute top-2 right-2 p-1.5 rounded-full bg-white dark:bg-gray-800 shadow-md hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary"
           aria-label={
             wishlisted
               ? `Remove ${product.title} from wishlist`
@@ -66,7 +66,9 @@ function ProductCard({ product }) {
           <Heart
             size={16}
             className={
-              wishlisted ? 'fill-primary text-primary' : 'text-gray-400'
+              wishlisted
+                ? 'fill-primary text-primary'
+                : 'text-gray-400 dark:text-gray-500'
             }
             aria-hidden="true"
           />
@@ -74,11 +76,11 @@ function ProductCard({ product }) {
       </Link>
 
       <div className="p-3 flex flex-col flex-1">
-        <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+        <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">
           {product.category}
         </p>
         <Link to={`/product/${product.id}`}>
-          <h3 className="text-sm font-medium text-dark hover:text-primary transition-colors leading-tight mb-2 line-clamp-2">
+          <h3 className="text-sm font-medium text-dark dark:text-white hover:text-primary transition-colors leading-tight mb-2 line-clamp-2">
             {truncate(product.title, 50)}
           </h3>
         </Link>
@@ -88,25 +90,27 @@ function ProductCard({ product }) {
             className="fill-yellow-400 text-yellow-400"
             aria-hidden="true"
           />
-          <span className="text-xs font-medium text-gray-600">
+          <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
             {product.rating?.toFixed(1)}
           </span>
-          <span className="text-xs text-gray-300">·</span>
-          <span className="text-xs text-gray-400">{product.stock} left</span>
+          <span className="text-xs text-gray-300 dark:text-gray-600">·</span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">
+            {product.stock} left
+          </span>
         </div>
         <div className="flex items-center gap-2 mt-auto mb-3">
           <span className="font-bold text-primary text-base">
             {formatPrice(discountedPrice)}
           </span>
           {product.discountPercentage > 0 && (
-            <span className="text-xs text-gray-400 line-through">
+            <span className="text-xs text-gray-400 dark:text-gray-500 line-through">
               {formatPrice(product.price)}
             </span>
           )}
         </div>
         <button
           onClick={handleAddToCart}
-          className="w-full flex items-center justify-center gap-2 bg-primary text-white text-sm font-semibold py-2 rounded-lg hover:bg-primaryDark active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="w-full flex items-center justify-center gap-2 bg-primary text-white text-sm font-semibold py-2 rounded-lg hover:bg-primaryDark active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800"
           aria-label={`Add ${product.title} to cart. Price: ${formatPrice(discountedPrice)}`}
         >
           <ShoppingCart size={14} aria-hidden="true" />

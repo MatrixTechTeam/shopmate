@@ -1,16 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class', // add this line
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        // Jumia-inspired colors
-        primary: '#F68B1E', // Jumia orange
-        primaryDark: '#E07A0E', // Darker orange for hover
-        secondary: '#F5F5F5', // Light background
-        dark: '#1A1A1A', // Almost black for text
-        darkGray: '#4A4A4A', // Secondary text
-        lightGray: '#E0E0E0', // Borders
+        primary: '#F68B1E',
+        primaryDark: '#E07A0E',
+        secondary: '#F5F5F5',
+        dark: '#1A1A1A',
+        darkGray: '#4A4A4A',
+        lightGray: '#E0E0E0',
         cardBg: '#FFFFFF',
         success: '#4CAF50',
         error: '#F44336',

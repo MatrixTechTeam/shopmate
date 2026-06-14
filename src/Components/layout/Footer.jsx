@@ -3,12 +3,12 @@ import { ShoppingBag, Mail } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-dark text-gray-300 mt-16 border-t border-gray-800">
+    <footer className="bg-dark dark:bg-black text-gray-300 dark:text-gray-400 mt-16 border-t border-gray-800 dark:border-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 text-white font-bold text-xl mb-4">
+            <div className="flex items-center gap-2 text-white dark:text-gray-200 font-bold text-xl mb-4">
               <ShoppingBag size={24} className="text-primary" />
               <span>
                 Shop<span className="text-primary">mate</span>
@@ -22,7 +22,7 @@ export default function Footer() {
 
           {/* Quick links */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+            <h4 className="text-white dark:text-gray-200 font-semibold text-sm mb-4 uppercase tracking-wider">
               Shop
             </h4>
             <ul className="space-y-2 text-sm">
@@ -60,7 +60,7 @@ export default function Footer() {
 
           {/* Support - now with correct links */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+            <h4 className="text-white dark:text-gray-200 font-semibold text-sm mb-4 uppercase tracking-wider">
               Support
             </h4>
             <ul className="space-y-2 text-sm">
@@ -87,7 +87,7 @@ export default function Footer() {
 
           {/* Contact us */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+            <h4 className="text-white dark:text-gray-200 font-semibold text-sm mb-4 uppercase tracking-wider">
               Contact Us
             </h4>
             <div className="flex gap-3">
@@ -102,9 +102,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-6 text-xs text-center text-gray-500">
+        <div className="border-t border-gray-800 dark:border-gray-900 mt-8 pt-6 text-xs text-center text-gray-500 dark:text-gray-600">
           © {new Date().getFullYear()} Shopmate. All rights reserved. Built with
-          React & Tailwind.
+          React & Tailwind by Group 4, Topfaith University.
         </div>
       </div>
     </footer>

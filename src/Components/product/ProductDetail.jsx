@@ -34,7 +34,7 @@ export default function ProductDetail({ product }) {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <button
         onClick={() => window.history.back()}
-        className="flex items-center gap-1 text-sm text-gray-500 hover:text-primary mb-6 transition-colors"
+        className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-primary mb-6 transition-colors"
       >
         <ArrowLeft size={16} /> Back
       </button>
@@ -42,7 +42,7 @@ export default function ProductDetail({ product }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Gallery */}
         <div>
-          <div className="relative bg-gray-50 rounded-2xl overflow-hidden aspect-square mb-3">
+          <div className="relative bg-gray-50 dark:bg-gray-800 rounded-2xl overflow-hidden aspect-square mb-3">
             <img
               src={images[imgIdx]}
               alt={product.title}
@@ -54,13 +54,13 @@ export default function ProductDetail({ product }) {
                   onClick={() =>
                     setImgIdx(i => (i - 1 + images.length) % images.length)
                   }
-                  className="absolute left-3 top-1/2 -translate-y-1/2 bg-white rounded-full p-1.5 shadow hover:bg-gray-100"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 rounded-full p-1.5 shadow hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   <ChevronLeft size={16} />
                 </button>
                 <button
                   onClick={() => setImgIdx(i => (i + 1) % images.length)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-white rounded-full p-1.5 shadow hover:bg-gray-100"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 rounded-full p-1.5 shadow hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   <ChevronRight size={16} />
                 </button>
@@ -73,7 +73,9 @@ export default function ProductDetail({ product }) {
                 <button
                   key={i}
                   onClick={() => setImgIdx(i)}
-                  className={`shrink-0 w-14 h-14 rounded-xl overflow-hidden border-2 transition-colors ${i === imgIdx ? 'border-primary' : 'border-transparent'}`}
+                  className={`shrink-0 w-14 h-14 rounded-xl overflow-hidden border-2 transition-colors ${
+                    i === imgIdx ? 'border-primary' : 'border-transparent'
+                  }`}
                 >
                   <img
                     src={img}
@@ -88,10 +90,12 @@ export default function ProductDetail({ product }) {
 
         {/* Info */}
         <div className="flex flex-col">
-          <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">
+          <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">
             {product.category}
           </p>
-          <h1 className="text-2xl font-bold text-dark mb-2">{product.title}</h1>
+          <h1 className="text-2xl font-bold text-dark dark:text-white mb-2">
+            {product.title}
+          </h1>
 
           <div className="flex items-center gap-2 mb-4">
             <div className="flex items-center gap-0.5">
@@ -102,15 +106,15 @@ export default function ProductDetail({ product }) {
                   className={
                     s <= Math.round(product.rating)
                       ? 'fill-yellow-400 text-yellow-400'
-                      : 'text-gray-200 fill-gray-200'
+                      : 'text-gray-200 dark:text-gray-600 fill-gray-200 dark:fill-gray-600'
                   }
                 />
               ))}
             </div>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-500 dark:text-gray-400">
               {product.rating?.toFixed(1)}
             </span>
-            <span className="text-gray-300">·</span>
+            <span className="text-gray-300 dark:text-gray-600">·</span>
             {product.stock > 0 ? (
               <Badge variant="green">{product.stock} in stock</Badge>
             ) : (
@@ -119,12 +123,12 @@ export default function ProductDetail({ product }) {
           </div>
 
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-3xl font-bold text-dark">
+            <span className="text-3xl font-bold text-dark dark:text-white">
               {formatPrice(discountedPrice)}
             </span>
             {product.discountPercentage > 0 && (
               <>
-                <span className="text-gray-400 line-through text-lg">
+                <span className="text-gray-400 dark:text-gray-500 line-through text-lg">
                   {formatPrice(product.price)}
                 </span>
                 <Badge variant="red">
@@ -134,7 +138,7 @@ export default function ProductDetail({ product }) {
             )}
           </div>
 
-          <p className="text-gray-600 text-sm leading-relaxed mb-6">
+          <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6">
             {product.description}
           </p>
 
@@ -167,19 +171,25 @@ export default function ProductDetail({ product }) {
           </div>
 
           {product.brand && (
-            <div className="mt-6 pt-6 border-t border-gray-100 grid grid-cols-2 gap-3 text-sm">
+            <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800 grid grid-cols-2 gap-3 text-sm">
               <div>
-                <span className="text-gray-400">Brand</span>
-                <p className="font-medium text-dark mt-0.5">{product.brand}</p>
+                <span className="text-gray-400 dark:text-gray-500">Brand</span>
+                <p className="font-medium text-dark dark:text-white mt-0.5">
+                  {product.brand}
+                </p>
               </div>
               <div>
-                <span className="text-gray-400">SKU</span>
-                <p className="font-medium text-dark mt-0.5">{product.sku}</p>
+                <span className="text-gray-400 dark:text-gray-500">SKU</span>
+                <p className="font-medium text-dark dark:text-white mt-0.5">
+                  {product.sku}
+                </p>
               </div>
               {product.warrantyInformation && (
                 <div className="col-span-2">
-                  <span className="text-gray-400">Warranty</span>
-                  <p className="font-medium text-dark mt-0.5">
+                  <span className="text-gray-400 dark:text-gray-500">
+                    Warranty
+                  </span>
+                  <p className="font-medium text-dark dark:text-white mt-0.5">
                     {product.warrantyInformation}
                   </p>
                 </div>
@@ -192,12 +202,17 @@ export default function ProductDetail({ product }) {
       {/* Reviews */}
       {product.reviews?.length > 0 && (
         <div className="mt-12">
-          <h2 className="text-lg font-bold text-dark mb-4">Customer Reviews</h2>
+          <h2 className="text-lg font-bold text-dark dark:text-white mb-4">
+            Customer Reviews
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {product.reviews.map((review, i) => (
-              <div key={i} className="bg-white rounded-2xl p-4 shadow-sm">
+              <div
+                key={i}
+                className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm"
+              >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-semibold text-sm text-dark">
+                  <span className="font-semibold text-sm text-dark dark:text-white">
                     {review.reviewerName}
                   </span>
                   <div className="flex gap-0.5">
@@ -208,16 +223,16 @@ export default function ProductDetail({ product }) {
                         className={
                           s <= review.rating
                             ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-gray-200 fill-gray-200'
+                            : 'text-gray-200 dark:text-gray-600 fill-gray-200 dark:fill-gray-600'
                         }
                       />
                     ))}
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                   {review.comment}
                 </p>
-                <p className="text-xs text-gray-400 mt-2">
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
                   {new Date(review.date).toLocaleDateString()}
                 </p>
               </div>

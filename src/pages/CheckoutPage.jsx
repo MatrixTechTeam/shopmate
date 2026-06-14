@@ -43,7 +43,6 @@ export default function CheckoutPage() {
     }
 
     setIsSubmitting(true);
-    // Simulate order processing
     await new Promise(resolve => setTimeout(resolve, 1500));
     const randomOrder = Math.floor(Math.random() * 1000000);
     setOrderNumber(`SHOP-${randomOrder}`);
@@ -55,7 +54,7 @@ export default function CheckoutPage() {
 
   const field = (name, label, placeholder, type = 'text') => (
     <div>
-      <label className="block text-xs font-medium text-gray-600 mb-1">
+      <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
         {label}
       </label>
       <input
@@ -66,10 +65,10 @@ export default function CheckoutPage() {
           setForm(f => ({ ...f, [name]: e.target.value }));
           setErrors(er => ({ ...er, [name]: '' }));
         }}
-        className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none transition-colors ${
+        className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${
           errors[name]
             ? 'border-red-400 focus:border-red-500'
-            : 'border-gray-200 focus:border-primary'
+            : 'border-gray-200 dark:border-gray-700 focus:border-primary'
         }`}
       />
       {errors[name] && (
@@ -81,7 +80,7 @@ export default function CheckoutPage() {
   if (cart.length === 0 && !showSuccessModal) {
     return (
       <div className="max-w-md mx-auto px-4 py-24 text-center">
-        <p className="text-gray-400">Your cart is empty.</p>
+        <p className="text-gray-400 dark:text-gray-500">Your cart is empty.</p>
         <Button className="mt-4" onClick={() => navigate('/shop')}>
           Go Shopping
         </Button>
@@ -92,41 +91,49 @@ export default function CheckoutPage() {
   return (
     <>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-dark mb-8">Checkout</h1>
+        <h1 className="text-2xl font-bold text-dark dark:text-white mb-8">
+          Checkout
+        </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-4">
-            <div className="bg-white rounded-2xl p-5 shadow-sm">
-              <h2 className="font-semibold text-dark mb-4">Shipping Info</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+              <h2 className="font-semibold text-dark dark:text-white mb-4">
+                Shipping Info
+              </h2>
               <div className="space-y-3">
                 {field('name', 'Full Name', 'Jane Smith')}
                 {field('email', 'Email', 'jane@example.com', 'email')}
                 {field('address', 'Address', '123 Main St, City, State')}
               </div>
             </div>
-            <div className="bg-white rounded-2xl p-5 shadow-sm">
-              <h2 className="font-semibold text-dark mb-4">Demo Payment</h2>
-              <div className="bg-green-50 border border-green-200 rounded-xl p-3 text-green-700 text-sm">
-                ✅ This is a demo – no real payment. Your order will be
-                successful instantly.
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+              <h2 className="font-semibold text-dark dark:text-white mb-4">
+                Demo Payment
+              </h2>
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-3 text-green-700 dark:text-green-300 text-sm">
+                This is a demo – no real payment. Your order will be successful
+                instantly.
               </div>
             </div>
           </div>
           <div>
-            <div className="bg-white rounded-2xl p-5 shadow-sm sticky top-20">
-              <h2 className="font-semibold text-dark mb-4">Order Summary</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm sticky top-20">
+              <h2 className="font-semibold text-dark dark:text-white mb-4">
+                Order Summary
+              </h2>
               <div className="space-y-3 mb-4">
                 {cart.map(item => (
                   <div key={item.id} className="flex justify-between text-sm">
-                    <span className="text-gray-600 truncate pr-2">
+                    <span className="text-gray-600 dark:text-gray-300 truncate pr-2">
                       {item.title} × {item.quantity}
                     </span>
-                    <span className="font-medium shrink-0">
+                    <span className="font-medium shrink-0 text-gray-900 dark:text-white">
                       {formatPrice(item.price * item.quantity)}
                     </span>
                   </div>
                 ))}
               </div>
-              <div className="border-t border-gray-100 pt-4 flex justify-between font-bold text-dark mb-5">
+              <div className="border-t border-gray-100 dark:border-gray-700 pt-4 flex justify-between font-bold text-dark dark:text-white mb-5">
                 <span>Total</span>
                 <span>{formatPrice(totalPrice)}</span>
               </div>

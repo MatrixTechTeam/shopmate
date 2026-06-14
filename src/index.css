@@ -119,3 +119,24 @@ input[type='range']:focus-visible {
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+/* Dark mode body */
+.dark body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: #2a2a2a;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #f68b1e;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #e07a0e;
+}
+
+/* Optional: dark mode skeleton */
+.dark .skeleton {
+  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+}

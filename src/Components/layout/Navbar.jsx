@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import DarkModeToggle from '../ui/DarkModeToggle'; // import toggle
 
 export default function Navbar() {
   const { totalItems } = useCart();
@@ -23,7 +24,6 @@ export default function Navbar() {
     e.preventDefault();
     if (query.trim()) {
       navigate(`/shop?q=${encodeURIComponent(query.trim())}`);
-      // ✅ Do NOT clear query – keeps the search term visible
       setMenuOpen(false);
     }
   };
@@ -34,7 +34,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-card"
+      className="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-card"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -51,7 +51,7 @@ export default function Navbar() {
               size={24}
               aria-hidden="true"
             />
-            <span className="text-dark">
+            <span className="text-dark dark:text-white">
               Shop<span className="text-primary">mate</span>
             </span>
           </Link>
@@ -60,68 +60,77 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-5 text-sm font-medium">
             <Link
               to="/"
-              className={`hover:text-primary transition ${location.pathname === '/' ? 'text-primary' : 'text-gray-600'}`}
+              className={`hover:text-primary transition ${
+                location.pathname === '/'
+                  ? 'text-primary'
+                  : 'text-gray-600 dark:text-gray-300'
+              }`}
             >
               Home
             </Link>
             <Link
               to="/shop"
-              className={`hover:text-primary transition ${location.pathname === '/shop' ? 'text-primary' : 'text-gray-600'}`}
+              className={`hover:text-primary transition ${
+                location.pathname === '/shop'
+                  ? 'text-primary'
+                  : 'text-gray-600 dark:text-gray-300'
+              }`}
             >
               Shop
             </Link>
-            <div className="flex items-center gap-3 ml-3 pl-3 border-l border-gray-200">
+            <div className="flex items-center gap-3 ml-3 pl-3 border-l border-gray-200 dark:border-gray-700">
               <Link
                 to="/shop?category=smartphones"
-                className="text-gray-600 hover:text-primary text-sm"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary text-sm"
               >
                 Phones
               </Link>
               <Link
                 to="/shop?category=laptops"
-                className="text-gray-600 hover:text-primary text-sm"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary text-sm"
               >
                 Laptops
               </Link>
               <Link
                 to="/shop?category=fragrances"
-                className="text-gray-600 hover:text-primary text-sm"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary text-sm"
               >
                 Fragrances
               </Link>
               <Link
                 to="/shop?category=skincare"
-                className="text-gray-600 hover:text-primary text-sm"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary text-sm"
               >
                 Beauty
               </Link>
             </div>
           </div>
 
-          {/* Desktop search – no double border */}
+          {/* Desktop search */}
           <form
             onSubmit={handleSearch}
-            className="hidden md:flex items-center bg-gray-100 rounded-full px-4 py-1.5 gap-2 w-80"
+            className="hidden md:flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-1.5 gap-2 w-80"
           >
-            <Search size={18} className="text-gray-400" />
+            <Search size={18} className="text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Search products..."
               value={query}
               onChange={e => setQuery(e.target.value)}
-              className="bg-transparent text-sm outline-none w-full"
+              className="bg-transparent text-sm outline-none w-full text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
               aria-label="Search products"
             />
           </form>
 
           {/* Icons & Mobile menu button */}
           <div className="flex items-center gap-0.5">
+            <DarkModeToggle />
             <Link
               to="/wishlist"
-              className="relative p-2 rounded-full hover:bg-gray-100 transition"
+              className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
               aria-label={`Wishlist (${wishlist.length})`}
             >
-              <Heart size={20} className="text-gray-700" />
+              <Heart size={20} className="text-gray-700 dark:text-gray-300" />
               {wishlist.length > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
                   {wishlist.length}
@@ -130,10 +139,13 @@ export default function Navbar() {
             </Link>
             <Link
               to="/cart"
-              className="relative p-2 rounded-full hover:bg-gray-100 transition"
+              className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
               aria-label={`Cart (${totalItems})`}
             >
-              <ShoppingCart size={20} className="text-gray-700" />
+              <ShoppingCart
+                size={20}
+                className="text-gray-700 dark:text-gray-300"
+              />
               {totalItems > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
                   {totalItems}
@@ -141,44 +153,48 @@ export default function Navbar() {
               )}
             </Link>
             <button
-              className="md:hidden p-2 rounded-full hover:bg-gray-100"
+              className="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={() => setMenuOpen(o => !o)}
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={menuOpen}
               onKeyDown={handleKeyDown}
             >
-              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+              {menuOpen ? (
+                <X size={20} className="text-gray-700 dark:text-gray-300" />
+              ) : (
+                <Menu size={20} className="text-gray-700 dark:text-gray-300" />
+              )}
             </button>
           </div>
         </div>
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="md:hidden py-3 space-y-2 border-t border-gray-100">
+          <div className="md:hidden py-3 space-y-2 border-t border-gray-100 dark:border-gray-800">
             <form
               onSubmit={handleSearch}
-              className="flex items-center bg-gray-100 rounded-full px-4 py-2 gap-2"
+              className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 gap-2"
             >
-              <Search size={16} className="text-gray-400" />
+              <Search size={16} className="text-gray-400 dark:text-gray-500" />
               <input
                 type="text"
                 placeholder="Search..."
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                className="bg-transparent text-sm outline-none w-full"
+                className="bg-transparent text-sm outline-none w-full text-gray-700 dark:text-gray-200"
               />
             </form>
             <Link
               to="/"
               onClick={() => setMenuOpen(false)}
-              className="block py-2 text-gray-700 hover:text-primary"
+              className="block py-2 text-gray-700 dark:text-gray-300 hover:text-primary"
             >
               Home
             </Link>
             <Link
               to="/shop"
               onClick={() => setMenuOpen(false)}
-              className="block py-2 text-gray-700 hover:text-primary"
+              className="block py-2 text-gray-700 dark:text-gray-300 hover:text-primary"
             >
               Shop
             </Link>
@@ -186,28 +202,28 @@ export default function Navbar() {
               <Link
                 to="/shop?category=smartphones"
                 onClick={() => setMenuOpen(false)}
-                className="text-gray-600 hover:text-primary"
+                className="text-gray-600 dark:text-gray-400 hover:text-primary"
               >
                 Phones
               </Link>
               <Link
                 to="/shop?category=laptops"
                 onClick={() => setMenuOpen(false)}
-                className="text-gray-600 hover:text-primary"
+                className="text-gray-600 dark:text-gray-400 hover:text-primary"
               >
                 Laptops
               </Link>
               <Link
                 to="/shop?category=fragrances"
                 onClick={() => setMenuOpen(false)}
-                className="text-gray-600 hover:text-primary"
+                className="text-gray-600 dark:text-gray-400 hover:text-primary"
               >
                 Fragrances
               </Link>
               <Link
                 to="/shop?category=skincare"
                 onClick={() => setMenuOpen(false)}
-                className="text-gray-600 hover:text-primary"
+                className="text-gray-600 dark:text-gray-400 hover:text-primary"
               >
                 Beauty
               </Link>
