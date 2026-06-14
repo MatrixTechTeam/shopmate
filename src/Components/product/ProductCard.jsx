@@ -14,8 +14,10 @@ function ProductCard({ product }) {
   const wishlisted = isWishlisted(product.id);
   const discountedPrice =
     product.price - (product.price * product.discountPercentage) / 100;
+  const isOutOfStock = product.stock === 0;
 
   const handleAddToCart = () => {
+    if (isOutOfStock) return;
     addToCart({ ...product, price: discountedPrice });
     addToast(`${product.title} added to cart!`, 'success');
   };
@@ -110,11 +112,20 @@ function ProductCard({ product }) {
         </div>
         <button
           onClick={handleAddToCart}
-          className="w-full flex items-center justify-center gap-2 bg-primary text-white text-sm font-semibold py-2 rounded-lg hover:bg-primaryDark active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-          aria-label={`Add ${product.title} to cart. Price: ${formatPrice(discountedPrice)}`}
+          disabled={isOutOfStock}
+          className={`w-full flex items-center justify-center gap-2 text-sm font-semibold py-2 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
+            isOutOfStock
+              ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+              : 'bg-primary text-white hover:bg-primaryDark active:scale-95'
+          }`}
+          aria-label={
+            isOutOfStock
+              ? `${product.title} is out of stock`
+              : `Add ${product.title} to cart. Price: ${formatPrice(discountedPrice)}`
+          }
         >
           <ShoppingCart size={14} aria-hidden="true" />
-          Add to cart
+          {isOutOfStock ? 'Out of Stock' : 'Add to cart'}
         </button>
       </div>
     </div>

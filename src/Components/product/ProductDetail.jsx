@@ -19,12 +19,14 @@ export default function ProductDetail({ product }) {
   const wishlisted = isWishlisted(product.id);
   const [imgIdx, setImgIdx] = useState(0);
   const [added, setAdded] = useState(false);
+  const isOutOfStock = product.stock === 0;
 
   const images = product.images?.length ? product.images : [product.thumbnail];
   const discountedPrice =
     product.price - (product.price * product.discountPercentage) / 100;
 
   const handleAddToCart = () => {
+    if (isOutOfStock) return;
     addToCart({ ...product, price: discountedPrice });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
@@ -115,7 +117,7 @@ export default function ProductDetail({ product }) {
               {product.rating?.toFixed(1)}
             </span>
             <span className="text-gray-300 dark:text-gray-600">·</span>
-            {product.stock > 0 ? (
+            {!isOutOfStock ? (
               <Badge variant="green">{product.stock} in stock</Badge>
             ) : (
               <Badge variant="red">Out of stock</Badge>
@@ -147,10 +149,11 @@ export default function ProductDetail({ product }) {
               fullWidth
               size="lg"
               onClick={handleAddToCart}
-              disabled={product.stock === 0}
+              disabled={isOutOfStock}
+              variant={isOutOfStock ? 'secondary' : 'primary'}
             >
               <ShoppingCart size={18} />
-              {added ? 'Added!' : 'Add to Cart'}
+              {isOutOfStock ? 'Out of Stock' : added ? 'Added!' : 'Add to Cart'}
             </Button>
             <Button
               variant="secondary"
