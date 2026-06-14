@@ -1,10 +1,10 @@
-import { useState, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useProducts } from '../hooks/useProducts';
 import ProductGrid from '../Components/product/ProductGrid';
 import FilterSidebar from '../Components/filters/FilterSidebar';
 import { Search, Filter } from 'lucide-react';
-import ProductCard from '../Components/product/ProductCard'; // needed for ref
+import ProductCard from '../Components/product/ProductCard';
 
 const SORT_OPTIONS = [
   { value: 'default', label: 'Default' },
@@ -14,16 +14,20 @@ const SORT_OPTIONS = [
 ];
 
 export default function Shop() {
-  const [searchParams] = useSearchParams();
-  const [category, setCategory] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Read initial values from URL
+  const urlQuery = searchParams.get('q') || '';
+  const urlCategory = searchParams.get('category') || '';
+
+  const [category, setCategory] = useState(urlCategory);
   const [maxPrice, setMaxPrice] = useState(2000);
   const [sort, setSort] = useState('default');
-  const [localQuery, setLocalQuery] = useState('');
+  const [localQuery, setLocalQuery] = useState(urlQuery);
   const [skip, setSkip] = useState(0);
   const limit = 12;
   const [showFilters, setShowFilters] = useState(false);
 
-  const urlQuery = searchParams.get('q') || '';
   const activeQuery = localQuery || urlQuery;
 
   const { products, loading, error, hasMore } = useProducts({
@@ -32,6 +36,14 @@ export default function Shop() {
     limit,
     skip,
   });
+
+  // Sync URL when category or query changes (so navbar links update the page)
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (category) params.set('category', category);
+    if (activeQuery) params.set('q', activeQuery);
+    setSearchParams(params, { replace: true });
+  }, [category, activeQuery, setSearchParams]);
 
   const filtered = useMemo(() => {
     let p = products.filter(x => x.price <= maxPrice);
@@ -73,9 +85,9 @@ export default function Shop() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
+    <div className="max-w-7xl mx-auto px-3 md:px-4 py-4 md:py-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Shop</h1>
+        <h1 className="text-2xl font-bold dark:text-white">Shop</h1>
         <button
           onClick={() => setShowFilters(true)}
           className="md:hidden flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-full text-sm"
@@ -102,12 +114,17 @@ export default function Shop() {
             onClick={() => setShowFilters(false)}
           >
             <div
-              className="absolute right-0 top-0 h-full w-80 bg-white p-4 shadow-lg"
+              className="absolute right-0 top-0 h-full w-80 bg-white dark:bg-gray-900 p-4 shadow-lg"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex justify-between items-center mb-4">
-                <h2 className="font-bold">Filters</h2>
-                <button onClick={() => setShowFilters(false)}>✕</button>
+                <h2 className="font-bold dark:text-white">Filters</h2>
+                <button
+                  onClick={() => setShowFilters(false)}
+                  className="dark:text-white"
+                >
+                  ✕
+                </button>
               </div>
               <FilterSidebar
                 selectedCategory={category}
@@ -125,20 +142,20 @@ export default function Shop() {
         {/* Products area */}
         <div className="flex-1">
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
-            <div className="flex-1 flex items-center bg-white rounded-full px-4 py-2 gap-2 shadow-sm">
+            <div className="flex-1 flex items-center bg-white dark:bg-gray-800 rounded-full px-4 py-2 gap-2 shadow-sm">
               <Search size={16} className="text-gray-400" />
               <input
                 type="text"
                 placeholder="Search products..."
                 value={localQuery}
                 onChange={handleQueryChange}
-                className="bg-transparent text-sm outline-none w-full"
+                className="bg-transparent text-sm outline-none w-full text-gray-700 dark:text-gray-200 placeholder-gray-400"
               />
             </div>
             <select
               value={sort}
               onChange={e => setSort(e.target.value)}
-              className="bg-white rounded-full px-4 py-2 text-sm shadow-sm"
+              className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-full px-4 py-2 text-sm shadow-sm border-none"
             >
               {SORT_OPTIONS.map(o => (
                 <option key={o.value} value={o.value}>
@@ -148,7 +165,7 @@ export default function Shop() {
             </select>
           </div>
 
-          <p className="text-xs text-gray-500 mb-3">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
             {filtered.length} products
           </p>
 
@@ -170,7 +187,7 @@ export default function Shop() {
             </div>
           )}
           {!hasMore && filtered.length > 0 && (
-            <p className="text-center text-gray-400 text-sm mt-8">
+            <p className="text-center text-gray-400 dark:text-gray-500 text-sm mt-8">
               You've reached the end
             </p>
           )}
