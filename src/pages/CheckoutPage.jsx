@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../../context/CartContext';
-import { useToast } from '../../context/ToastContext';
-import { formatPrice } from '../../utils/helpers';
-import Button from '../ui/Button';
-import OrderSuccessModal from './OrderSuccessModal';
+import { useCart } from '../context/CartContext';
+import { useToast } from '../context/ToastContext';
+import { formatPrice } from '../utils/helpers';
+import Button from '../Components/ui/Button';
+import OrderSuccessModal from '../Components/checkout/OrderSuccessModal';
 
 export default function CheckoutPage() {
   const { cart, totalPrice, clearCart } = useCart();
@@ -43,7 +43,7 @@ export default function CheckoutPage() {
     }
 
     setIsSubmitting(true);
-    // Simulate order processing (e.g., API call)
+    // Simulate order processing
     await new Promise(resolve => setTimeout(resolve, 1500));
     const randomOrder = Math.floor(Math.random() * 1000000);
     setOrderNumber(`SHOP-${randomOrder}`);
