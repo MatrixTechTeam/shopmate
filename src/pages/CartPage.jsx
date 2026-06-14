@@ -11,6 +11,10 @@ export default function CartPage() {
   const { addToast } = useToast();
 
   const handleClearCart = () => {
+    if (cart.length === 0) {
+      addToast('Cart is already empty', 'info');
+      return;
+    }
     clearCart();
     addToast('Cart cleared', 'warning');
   };

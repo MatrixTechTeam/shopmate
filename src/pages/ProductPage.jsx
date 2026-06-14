@@ -3,14 +3,15 @@ import { useParams } from 'react-router-dom';
 import { fetchProductById } from '../services/api';
 import ProductDetail from '../Components/product/ProductDetail';
 import Spinner from '../Components/ui/Spinner';
-import { useRecentlyViewed } from '../context/RecentlyViewedContext'; // add this
+import { useRecentlyViewed } from '../context/RecentlyViewedContext';
+import NotFound from './NotFound'; // import 404 page
 
 export default function ProductPage() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { addRecentlyViewed } = useRecentlyViewed(); // add this
+  const { addRecentlyViewed } = useRecentlyViewed();
 
   useEffect(() => {
     setLoading(true);
@@ -20,23 +21,24 @@ export default function ProductPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  // Add to recently viewed when product is loaded
   useEffect(() => {
     if (product && product.id) {
       addRecentlyViewed(product);
     }
   }, [product, addRecentlyViewed]);
 
-  if (loading)
+  if (loading) {
     return (
       <div className="flex justify-center items-center py-24">
         <Spinner size="lg" />
       </div>
     );
-  if (error || !product)
-    return (
-      <div className="text-center py-24 text-gray-500">Product not found.</div>
-    );
+  }
+
+  // Show 404 page if product not found or error
+  if (error || !product) {
+    return <NotFound />;
+  }
 
   return <ProductDetail product={product} />;
 }

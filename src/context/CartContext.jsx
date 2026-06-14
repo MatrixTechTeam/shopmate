@@ -6,14 +6,19 @@ const CART_STORAGE_KEY = 'shopmate_cart';
 const cartReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_TO_CART': {
-      const exists = state.find(item => item.id === action.payload.id);
-      if (exists) {
-        return state.map(item =>
-          item.id === action.payload.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
+      const existingIndex = state.findIndex(
+        item => item.id === action.payload.id
+      );
+      if (existingIndex !== -1) {
+        // Item exists – increment quantity
+        const updated = [...state];
+        updated[existingIndex] = {
+          ...updated[existingIndex],
+          quantity: updated[existingIndex].quantity + 1,
+        };
+        return updated;
       }
+      // New item
       return [...state, { ...action.payload, quantity: 1 }];
     }
     case 'REMOVE_FROM_CART':
